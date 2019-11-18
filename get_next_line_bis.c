@@ -1,43 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bis.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mahoang <mahoang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 18:44:45 by mahoang           #+#    #+#             */
-/*   Updated: 2019/11/18 17:00:22 by mahoang          ###   ########.fr       */
+/*   Updated: 2019/11/18 16:48:31 by mahoang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*ft_strchr(const char *s, int c)
+void		*ft_calloc(size_t count, size_t size)
 {
-	int i;
+	char		*tab;
+	size_t		i;
 
-	i = 0;
-	if (!s)
+	if (!(tab = malloc(size * count)))
 		return (NULL);
-	while (s[i])
+	i = 0;
+	while (i < count * size)
 	{
-		if (s[i] == (unsigned char)c)
-			return ((char *)&s[i]);
+		tab[i] = '\0';
 		i++;
 	}
-	if (s[i] == (unsigned char)c)
-		return ((char *)&s[i]);
-	return (NULL);
+	return (tab);
 }
 
-char		*ft_readline(char *stock, int fd, int c)
+char	*ft_readline(char *stock, int fd)
 {
 	char	*str;
+	int		c;
 	char	*tmp;
 
-	if (!stock)
-		if (!(stock = malloc(1)))
-			return (NULL);
+	if (stock == NULL)
+		stock = ft_calloc(sizeof(char), 1);
 	if (!(str = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (NULL);
 	while (!ft_strchr(stock, '\n'))
@@ -59,37 +57,24 @@ char		*ft_readline(char *stock, int fd, int c)
 	return (stock);
 }
 
-size_t		ft_linelen(char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] && s[i] != '\n')
-		i++;
-	return (i);
-}
-
-char		*to_free(char *str)
-{
-	free(str);
-	str = NULL;
-	return (str);
-}
-
-int			get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
 	static char	*stock = NULL;
 	int			i;
 	char		*tmp;
 
-	i = 0;
-	if (fd <= -1 || line == NULL || BUFFER_SIZE < 1 || read(fd, stock, 0) == -1)
+	if ((fd <= -1 || line == NULL || BUFFER_SIZE < 1) || read(fd, stock, 0) < 0
+	|| !(stock = ft_readline(stock, fd)))
+	{
+		free(stock);
+		stock = NULL;
 		return (-1);
-	if (!(stock = ft_readline(stock, fd, i)))
-		to_free(stock);
+	}
+	i = 0;
 	if (stock[i])
 	{
-		i = ft_linelen(stock);
+		while (stock[i] != '\n' && stock[i])
+			i++;
 		*line = ft_substr(stock, 0, i);
 		tmp = stock;
 		stock = ft_strdup((stock + i + (stock[i] == '\n' ? 1 : 0)));
