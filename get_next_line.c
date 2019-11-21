@@ -6,7 +6,7 @@
 /*   By: mahoang <mahoang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 18:44:45 by mahoang           #+#    #+#             */
-/*   Updated: 2019/11/18 17:00:22 by mahoang          ###   ########.fr       */
+/*   Updated: 2019/11/21 15:27:21 by mahoang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ char		*ft_readline(char *stock, int fd, int c)
 	char	*tmp;
 
 	if (!stock)
-		if (!(stock = malloc(1)))
-			return (NULL);
+		stock = ft_strdup("");
 	if (!(str = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (NULL);
 	while (!ft_strchr(stock, '\n'))
@@ -86,21 +85,21 @@ int			get_next_line(int fd, char **line)
 	if (fd <= -1 || line == NULL || BUFFER_SIZE < 1 || read(fd, stock, 0) == -1)
 		return (-1);
 	if (!(stock = ft_readline(stock, fd, i)))
-		to_free(stock);
-	if (stock[i])
+	{
+		stock = to_free(stock);
+		return (-1);
+	}
+	if (stock && stock[i])
 	{
 		i = ft_linelen(stock);
 		*line = ft_substr(stock, 0, i);
 		tmp = stock;
 		stock = ft_strdup((stock + i + (stock[i] == '\n' ? 1 : 0)));
-		if (tmp[i] == '\0')
-		{
-			free(tmp);
-			return (0);
-		}
+		i = (tmp[i] != '\0');
 		free(tmp);
-		return (1);
+		return (i);
 	}
 	*line = ft_strdup("");
+	stock = to_free(stock);
 	return (0);
 }
