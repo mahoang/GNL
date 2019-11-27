@@ -6,7 +6,7 @@
 /*   By: mahoang <mahoang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 19:00:22 by mahoang           #+#    #+#             */
-/*   Updated: 2019/11/18 16:36:08 by mahoang          ###   ########.fr       */
+/*   Updated: 2019/11/26 13:38:38 by mahoang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <fcntl.h>
 
 int			get_next_line(int fd, char **line);
-char		*ft_readline(char *stock, int fd, int c);
+char		*ft_readline(char *stock, int fd, int i);
 char		*ft_strchr(const char *s, int c);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strcpy(char *dest, const char *src);
