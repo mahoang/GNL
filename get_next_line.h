@@ -6,7 +6,7 @@
 /*   By: mahoang <mahoang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 19:00:22 by mahoang           #+#    #+#             */
-/*   Updated: 2019/11/28 11:05:10 by mahoang          ###   ########.fr       */
+/*   Updated: 2019/11/28 11:14:46 by mahoang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
-#endif
 
 int			get_next_line(int fd, char **line);
 int			ft_readline(char **stock, int fd);
